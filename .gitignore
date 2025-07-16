@@ -21,7 +21,6 @@ Thumbs.db
 .build
 node_modules
 .cache
-assets/**/*.css
 /coverage
 yarn.lock
 package-lock.json
