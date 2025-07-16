@@ -1,0 +1,485 @@
+$prefixClass: week-slider;
+
+$disabledColor: #ccc;
+$border-radius-base: 6px;
+$primary-color: #2db7f5;
+
+@function tint($color, $percentage) {
+  @return mix(white, $color, $percentage);
+}
+
+
+.#{$prefixClass} {
+  position: relative;
+  width: 100%;
+  height: 14px;
+  padding: 5px 0;
+  border-radius: $border-radius-base;
+  touch-action: none;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0); //  remove tap highlight color for mobile safari
+
+  * {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0); //  remove tap highlight color for mobile safari
+  }
+
+  &-rail {
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background-color: #7c8996;
+    border-radius: $border-radius-base;
+  }
+
+  &-track,
+  &-tracks {
+    position: absolute;
+    height: 2px;
+    background-color: #26aa4b;
+    border-radius: $border-radius-base;
+  }
+
+  &-track {
+    &:before {
+      content: "";
+      width: 0;
+      height: 0;
+      border-top: 4px solid transparent;
+      border-bottom: 4px solid transparent;
+      border-left: 4px solid #26aa4b;
+      position: absolute;
+      right: -2px;
+      top: calc(50% - 4px);
+      z-index: 1;
+    }
+  }
+
+  &-track-draggable {
+    z-index: 1;
+    box-sizing: content-box;
+    background-clip: content-box;
+    border-top: 5px solid rgba(0, 0, 0, 0);
+    border-bottom: 5px solid rgba(0, 0, 0, 0);
+    transform: translateY(-5px);
+  }
+
+  &-handle {
+    position: absolute;
+    z-index: 1;
+    width: 40px;
+    height: 40px;
+    background-color: #fff;
+    border: solid 2px #fff;
+    border-radius: 50%;
+    cursor: grab;
+    user-select: none;
+    touch-action: pan-x;
+    top: 26px;
+
+    .#{$prefixClass}-handle-pointer {
+      height: 10px;
+      width: 10px;
+      background: #fff;
+      transform: rotate(225deg);
+      position: absolute;
+      top: -5px;
+      left: calc(50% - 5px);
+      z-index: 0;
+    }
+
+    .#{$prefixClass}-handle-inner-container {
+      background-color: #f2c44d;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      position: relative;
+      z-index: 1;
+
+      .#{$prefixClass}-handle-inner-pointer {
+        height: 10px;
+        width: 10px;
+        background: #f2c44d;
+        transform: rotate(225deg);
+        position: absolute;
+        top: -2px;
+        left: calc(50% - 5px);
+        z-index: 1;
+      }
+    }
+
+    .#{$prefixClass}-handle-prev-button {
+      background: #ffffff;
+      width: 24px;
+      display: flex;
+      height: 24px;
+      cursor: pointer;
+      position: absolute;
+      left: -20px;
+      top: calc(50% - 12px);
+      border-top-left-radius: 7px;
+      border-bottom-left-radius: 7px;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    .#{$prefixClass}-handle-next-button {
+      background: #ffffff;
+      width: 24px;
+      display: flex;
+      height: 24px;
+      cursor: pointer;
+      position: absolute;
+      right: -20px;
+      top: calc(50% - 12px);
+      border-top-right-radius: 7px;
+      border-bottom-right-radius: 7px;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    &-dragging {
+      //border-color: tint($primary-color, 20%);
+      //box-shadow: 0 0 0 5px tint($primary-color, 50%);
+
+      &-delete {
+        opacity: 0;
+      }
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: none;
+    }
+
+    &:focus-visible {
+      //border-color: $primary-color;
+      //box-shadow: 0 0 0 3px tint($primary-color, 50%);
+    }
+
+    &-click-focused:focus {
+      //border-color: tint($primary-color, 50%);
+      //box-shadow: unset;
+    }
+
+    &:hover {
+      //border-color: tint($primary-color, 20%);
+    }
+
+    &:active {
+      //border-color: tint($primary-color, 20%);
+      //box-shadow: 0 0 5px tint($primary-color, 20%);
+      //cursor: -webkit-grabbing;
+      cursor: grabbing;
+    }
+  }
+
+  &-mark {
+    position: absolute;
+    bottom: 42px;
+    left: 0;
+    width: 100%;
+    font-size: 12px;
+  }
+
+  &-mark-text {
+    position: absolute;
+    display: flex;
+    color: #92aac2;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-family: Manrope, arial, serif;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 700;
+
+    &-active {
+      color: #45ce6c;
+    }
+
+    &.first-mark {
+      cursor: default;
+
+      .start-mark-wrapper {
+        position: absolute;
+        left: -11px;
+        top: 0;
+
+        img {
+          width: 25px;
+          height: 25px;
+        }
+      }
+    }
+
+    &.last-mark {
+      cursor: default;
+
+      .finish-mark-wrapper {
+        position: absolute;
+        left: -11px;
+        top: 0;
+
+        img {
+          width: 25px;
+          height: 25px;
+        }
+      }
+    }
+
+    @keyframes rotateY {
+      from {
+        transform: rotateY(0deg);
+      }
+      to {
+        transform: rotateY(360deg);
+      }
+    }
+
+    .map-marker {
+      position: absolute;
+      left: calc(50% - 8px);
+      animation: rotateY 3s linear infinite;
+
+      img {
+        width: 14px;
+        height: 14px;
+      }
+    }
+
+    &.month-mark {
+      &.yellow-event {
+        cursor: default;
+        color: #f1c40f;
+
+        &-active {
+          color: #f1c40f;
+        }
+      }
+
+      &.green-event {
+        cursor: default;
+        color: #45ce6c;
+
+        &-active {
+          color: #45ce6c;
+        }
+      }
+
+      .map-marker {
+        bottom: 15px;
+
+        img {
+          width: 16px;
+          height: 16px;
+        }
+      }
+
+      .event-label-wrapper {
+        //top: 66.5px;
+
+        .event-label-separator {
+          //top: -26px;
+        }
+      }
+    }
+
+    &.week-mark {
+      .map-marker {
+        top: 16px;
+      }
+    }
+
+    .event-label-wrapper {
+      position: absolute;
+      top: 60px;
+      z-index: 2;
+      cursor: default;
+
+      .event-label {
+        white-space: nowrap;
+        background: rgba(255, 255, 255, 0.10);
+        border-radius: 6px;
+        color: #fff;
+        padding: 6px 12px;
+        font-size: 13px;
+        font-weight: 500;
+        letter-spacing: -0.13px;
+        font-family: Manrope, arial, serif;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+
+        &-separator {
+          position: absolute;
+          border-left: 1px solid #7c8996;
+          width: 0;
+          height: 20px;
+          top: -20px;
+          left: calc(50% - 0.5px);
+
+          &:before {
+            content: "";
+            position: absolute;
+            top: -4px;
+            left: calc(50% - 3px);
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background-color: #7c8996;
+          }
+        }
+      }
+    }
+  }
+
+  &-step {
+    position: absolute;
+    width: 100%;
+    height: 4px;
+    background: transparent;
+  }
+
+  &-dot {
+    position: absolute;
+    bottom: -7px;
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    background: #4a4a4a;
+    border: 2px solid #4a4a4a;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 1;
+
+    &.month-mark {
+      &:before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 10px;
+        height: 10px;
+        background: #7c8996;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      &.#{$prefixClass}-dot-active {
+        &:before {
+          background: #28a34b
+        }
+      }
+
+      &.yellow-event {
+        cursor: default;
+        border-color: #f1c40f;
+
+        &:before {
+          background: #f1c40f
+        }
+
+        &.#{$prefixClass}-dot-active {
+          &:before {
+            background: #f1c40f
+          }
+        }
+      }
+
+      &.green-event {
+        cursor: default;
+        border-color: #45ce6c;
+
+        &:before {
+          background: #45ce6c
+        }
+
+        &.#{$prefixClass}-dot-active {
+          &:before {
+            background: #45ce6c
+          }
+        }
+      }
+    }
+
+    &.week-mark {
+      width: 0;
+      border-radius: 0;
+      bottom: 4px;
+      height: 8px;
+      border: 0 none;
+
+      //border-width: 1.5px;
+      //border-color: rgba(122, 139, 156, 0.2);
+
+      &.center {
+        //height: 12px;
+      }
+
+      &.#{$prefixClass}-dot-active {
+        //border-color: rgba(38, 170, 75, 0.2);
+      }
+    }
+
+    &.first-mark {
+      width: 8px;
+      height: 8px;
+      bottom: -1px;
+      border: 0 none;
+      background: #28a34b;
+      cursor: default;
+    }
+
+    &.last-mark {
+      width: 8px;
+      height: 8px;
+      bottom: -1px;
+      border: 0 none;
+      background: #7c8996;
+      cursor: default;
+    }
+
+    &.empty-mark {
+      display: none;
+    }
+
+    &.space-mark {
+      width: 0;
+      height: 0;
+      border: 0 none;
+      cursor: default;
+      bottom: 0;
+      background: none;
+      border-radius: 0;
+    }
+
+    &.#{$prefixClass}-dot-active {
+      border-color: #28a34b
+    }
+  }
+
+  &-disabled {
+    background-color: #e9e9e9;
+
+    .#{$prefixClass}-track {
+      background-color: $disabledColor;
+    }
+
+    .#{$prefixClass}-handle,
+    .#{$prefixClass}-dot {
+      background-color: #fff;
+      border-color: $disabledColor;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+
+    .#{$prefixClass}-mark-text,
+    .#{$prefixClass}-dot {
+      cursor: not-allowed !important;
+    }
+  }
+}
