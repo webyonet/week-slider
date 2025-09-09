@@ -9,19 +9,20 @@ export interface MarkProps {
   children?: React.ReactNode;
   style?: React.CSSProperties;
   value: number;
+  positionFixer?: number;
   disabled: boolean;
   onClick: (value: number) => void;
 }
 
 const Mark: React.FC<MarkProps> = (props) => {
-  const { prefixCls, style, children, value, onClick, className, disabled } = props;
+  const { prefixCls, style, children, value, onClick, className, disabled, positionFixer } = props;
   const { min, max, direction, includedStart, includedEnd, included } =
     React.useContext(SliderContext);
 
   const textCls = `${prefixCls}-text`;
 
   // ============================ Offset ============================
-  const positionStyle = getDirectionStyle(direction, value, min, max);
+  const positionStyle = getDirectionStyle(direction, value, min, max, positionFixer);
 
   return (
     <span

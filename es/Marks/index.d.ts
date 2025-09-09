@@ -4,6 +4,7 @@ export interface MarkObj {
     label?: React.ReactNode;
     className?: string;
     disabled?: boolean;
+    positionFixer?: number;
 }
 export interface InternalMarkObj extends MarkObj {
     value: number;

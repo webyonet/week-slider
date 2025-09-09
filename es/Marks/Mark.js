@@ -11,7 +11,8 @@ var Mark = function Mark(props) {
     value = props.value,
     _onClick = props.onClick,
     className = props.className,
-    disabled = props.disabled;
+    disabled = props.disabled,
+    positionFixer = props.positionFixer;
   var _React$useContext = React.useContext(SliderContext),
     min = _React$useContext.min,
     max = _React$useContext.max,
@@ -22,7 +23,7 @@ var Mark = function Mark(props) {
   var textCls = "".concat(prefixCls, "-text");
 
   // ============================ Offset ============================
-  var positionStyle = getDirectionStyle(direction, value, min, max);
+  var positionStyle = getDirectionStyle(direction, value, min, max, positionFixer);
   return /*#__PURE__*/React.createElement("span", {
     className: classNames(textCls, className, _defineProperty({}, "".concat(textCls, "-active"), included && includedStart <= value && value <= includedEnd)),
     style: _objectSpread(_objectSpread({}, positionStyle), style),

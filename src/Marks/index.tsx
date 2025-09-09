@@ -6,6 +6,7 @@ export interface MarkObj {
   label?: React.ReactNode;
   className?: string;
   disabled?: boolean;
+  positionFixer?: number;
 }
 
 export interface InternalMarkObj extends MarkObj {
@@ -30,8 +31,8 @@ const Marks: React.FC<MarksProps> = (props) => {
 
   return (
     <div className={markPrefixCls}>
-      {marks.map<React.ReactNode>(({ value, style, label, className, disabled }) => (
-        <Mark key={value} prefixCls={markPrefixCls} className={className} style={style} value={value} disabled={disabled} onClick={onClick}>
+      {marks.map<React.ReactNode>(({ value, style, label, className, disabled, positionFixer }) => (
+        <Mark key={value} prefixCls={markPrefixCls} className={className} style={style} value={value} disabled={disabled} positionFixer={positionFixer} onClick={onClick}>
           {label}
         </Mark>
       ))}

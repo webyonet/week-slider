@@ -6,6 +6,7 @@ export interface TrackProps {
     values: number[];
     onStartMove?: OnStartMove;
     startPoint?: number;
+    marksObject: any;
 }
 declare const Tracks: React.FC<TrackProps>;
 export default Tracks;

@@ -13,16 +13,23 @@ export interface TrackProps {
   end: number;
   index: number;
   onStartMove?: OnStartMove;
+  marksObject: any;
 }
 
 const Track: React.FC<TrackProps> = (props) => {
-  const { prefixCls, style, start, end, index, onStartMove, replaceCls } = props;
+  const { prefixCls, style, start, end, index, onStartMove, replaceCls, marksObject } = props;
   const { direction, min, max, disabled, range, classNames } = React.useContext(SliderContext);
 
   const trackPrefixCls = `${prefixCls}-track`;
 
   const offsetStart = getOffset(start, min, max);
-  const offsetEnd = getOffset(end, min, max);
+  let offsetEnd = getOffset(end, min, max);
+
+  const positionFixer = marksObject?.[end]?.positionFixer;
+
+  if (positionFixer) {
+    offsetEnd += positionFixer;
+  }
 
   // ============================ Events ============================
   const onInternalStartMove = (e: React.MouseEvent | React.TouchEvent) => {

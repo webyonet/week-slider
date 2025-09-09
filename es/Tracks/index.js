@@ -9,7 +9,8 @@ var Tracks = function Tracks(props) {
     style = props.style,
     values = props.values,
     startPoint = props.startPoint,
-    onStartMove = props.onStartMove;
+    onStartMove = props.onStartMove,
+    marksObject = props.marksObject;
   var _React$useContext = React.useContext(SliderContext),
     included = _React$useContext.included,
     range = _React$useContext.range,
@@ -50,6 +51,7 @@ var Tracks = function Tracks(props) {
   var tracksNode = trackList !== null && trackList !== void 0 && trackList.length && (classNames.tracks || styles.tracks) ? /*#__PURE__*/React.createElement(Track, {
     index: null,
     prefixCls: prefixCls,
+    marksObject: marksObject,
     start: trackList[0].start,
     end: trackList[trackList.length - 1].end,
     replaceCls: cls(classNames.tracks, "".concat(prefixCls, "-tracks")),
@@ -60,6 +62,7 @@ var Tracks = function Tracks(props) {
       end = _ref.end;
     return /*#__PURE__*/React.createElement(Track, {
       index: index,
+      marksObject: marksObject,
       prefixCls: prefixCls,
       style: _objectSpread(_objectSpread({}, getIndex(style, index)), styles.track),
       start: start,

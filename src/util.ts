@@ -7,14 +7,8 @@ export function getOffset(value: number, min: number, max: number) {
 export function getDirectionStyle(direction: Direction, value: number, min: number, max: number, positionFixer: number = null) {
   let offset = getOffset(value, min, max);
 
-  let fixer = positionFixer ? (getOffset(value - positionFixer, min, max)) : 0;
-
-  if (fixer) {
-    const diff = getOffset(1, min, max);
-
-    fixer += diff * positionFixer;
-
-    offset = fixer;
+  if (positionFixer) {
+    offset += positionFixer;
   }
 
   const positionStyle: React.CSSProperties = {};

@@ -137,6 +137,7 @@ var WeekSlider = /*#__PURE__*/React.forwardRef(function (props, ref) {
         markObj.className = mark.className;
         markObj.disabled = mark.disabled;
         markObj.label = mark.label;
+        markObj.positionFixer = mark.positionFixer;
       } else {
         // @ts-ignore
         markObj.className = mark.className;
@@ -456,6 +457,7 @@ var WeekSlider = /*#__PURE__*/React.forwardRef(function (props, ref) {
     prefixCls: prefixCls,
     style: trackStyle,
     values: rawValues,
+    marksObject: marks,
     startPoint: startPoint,
     onStartMove: mergedDraggableTrack ? onStartMove : undefined
   }), /*#__PURE__*/React.createElement(Steps, {

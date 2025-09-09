@@ -4,11 +4,8 @@ export function getOffset(value, min, max) {
 export function getDirectionStyle(direction, value, min, max) {
   var positionFixer = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : null;
   var offset = getOffset(value, min, max);
-  var fixer = positionFixer ? getOffset(value - positionFixer, min, max) : 0;
-  if (fixer) {
-    var diff = getOffset(1, min, max);
-    fixer += diff * positionFixer;
-    offset = fixer;
+  if (positionFixer) {
+    offset += positionFixer;
   }
   var positionStyle = {};
   switch (direction) {

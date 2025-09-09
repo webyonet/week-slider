@@ -5,6 +5,7 @@ export interface MarkProps {
     children?: React.ReactNode;
     style?: React.CSSProperties;
     value: number;
+    positionFixer?: number;
     disabled: boolean;
     onClick: (value: number) => void;
 }

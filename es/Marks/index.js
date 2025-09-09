@@ -17,7 +17,8 @@ var Marks = function Marks(props) {
       style = _ref.style,
       label = _ref.label,
       className = _ref.className,
-      disabled = _ref.disabled;
+      disabled = _ref.disabled,
+      positionFixer = _ref.positionFixer;
     return /*#__PURE__*/React.createElement(Mark, {
       key: value,
       prefixCls: markPrefixCls,
@@ -25,6 +26,7 @@ var Marks = function Marks(props) {
       style: style,
       value: value,
       disabled: disabled,
+      positionFixer: positionFixer,
       onClick: onClick
     }, label);
   }));

@@ -5,13 +5,15 @@ import * as React from 'react';
 import SliderContext from "../context";
 import { getOffset } from "../util";
 var Track = function Track(props) {
+  var _marksObject$end;
   var prefixCls = props.prefixCls,
     style = props.style,
     start = props.start,
     end = props.end,
     index = props.index,
     onStartMove = props.onStartMove,
-    replaceCls = props.replaceCls;
+    replaceCls = props.replaceCls,
+    marksObject = props.marksObject;
   var _React$useContext = React.useContext(SliderContext),
     direction = _React$useContext.direction,
     min = _React$useContext.min,
@@ -22,6 +24,10 @@ var Track = function Track(props) {
   var trackPrefixCls = "".concat(prefixCls, "-track");
   var offsetStart = getOffset(start, min, max);
   var offsetEnd = getOffset(end, min, max);
+  var positionFixer = marksObject === null || marksObject === void 0 || (_marksObject$end = marksObject[end]) === null || _marksObject$end === void 0 ? void 0 : _marksObject$end.positionFixer;
+  if (positionFixer) {
+    offsetEnd += positionFixer;
+  }
 
   // ============================ Events ============================
   var onInternalStartMove = function onInternalStartMove(e) {

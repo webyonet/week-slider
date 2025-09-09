@@ -11,10 +11,11 @@ export interface TrackProps {
   values: number[];
   onStartMove?: OnStartMove;
   startPoint?: number;
+  marksObject: any;
 }
 
 const Tracks: React.FC<TrackProps> = (props) => {
-  const { prefixCls, style, values, startPoint, onStartMove } = props;
+  const { prefixCls, style, values, startPoint, onStartMove, marksObject } = props;
   const { included, range, min, styles, classNames } = React.useContext(SliderContext);
 
   // =========================== List ===========================
@@ -51,6 +52,7 @@ const Tracks: React.FC<TrackProps> = (props) => {
       <Track
         index={null}
         prefixCls={prefixCls}
+        marksObject={marksObject}
         start={trackList[0].start}
         end={trackList[trackList.length - 1].end}
         replaceCls={cls(classNames.tracks, `${prefixCls}-tracks`)}
@@ -64,6 +66,7 @@ const Tracks: React.FC<TrackProps> = (props) => {
       {trackList.map<React.ReactNode>(({ start, end }, index) => (
         <Track
           index={index}
+          marksObject={marksObject}
           prefixCls={prefixCls}
           style={{ ...getIndex(style, index), ...styles.track }}
           start={start}

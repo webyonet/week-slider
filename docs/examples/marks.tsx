@@ -80,6 +80,8 @@ function generateWeekMap({ startYear, startMonth, activeWeekIndex = null, curren
 
   const isMarker = activeWeekIndex !== currentWeekIndex;
 
+  const maxWeekCount = Math.max(...weekList.map(o => o.totalWeek)) - 1;
+
   const markerTemplate = (
     <span className="map-marker">
       <img alt="" src={MarkerMapIcon} draggable={false} />
@@ -88,9 +90,9 @@ function generateWeekMap({ startYear, startMonth, activeWeekIndex = null, curren
 
   let marksMap: any = {};
 
-  let monthIndexList: number[] = [];
+  const monthIndexList: number[] = [];
 
-  weekList.forEach(item => {
+  weekList.forEach((item, monthIndex) => {
     currentMonthIndex = weekIndex;
     monthIndexList.push(currentMonthIndex);
 
@@ -126,6 +128,7 @@ function generateWeekMap({ startYear, startMonth, activeWeekIndex = null, curren
     weekIndex += 1;
 
     const totalWeeks = (item?.totalWeek - 1);
+    const isFixer = totalWeeks < maxWeekCount;
 
     for (let i = 1; i <= totalWeeks; i++) {
       const value = (item?.startWeek + i);
@@ -136,7 +139,8 @@ function generateWeekMap({ startYear, startMonth, activeWeekIndex = null, curren
         month: item?.month,
         year: item?.year,
         disabled: !(isMarker && currentWeekIndex === weekIndex),
-        positionFixer: i,
+        // positionFixer: isFixer ? ((maxWeekCount - totalWeeks) / weekList.length) : null,
+        positionFixer: isFixer ? 0.006 : null,
         currentMonthIndex,
         label: (
           <Fragment>
@@ -160,6 +164,22 @@ function generateWeekMap({ startYear, startMonth, activeWeekIndex = null, curren
       };
 
       weekIndex++;
+    }
+
+    if (totalWeeks < maxWeekCount && monthIndex < (weekList.length - 1)) {
+      const diff = (maxWeekCount - totalWeeks);
+
+      for (let j = 0; j < diff; j++) {
+        marksMap[weekIndex] = {
+          className: 'empty-mark',
+          label: null,
+          disabled: true,
+          value: -1,
+          positionFixer: null,
+        };
+
+        weekIndex += 1;
+      }
     }
 
     const monthEvent = eventMap[`${item.month}-${item.year}`];
@@ -199,7 +219,7 @@ function generateWeekMap({ startYear, startMonth, activeWeekIndex = null, curren
 
       weekIndex += 1;
 
-      for (let i = 0; i < 5; i++) {
+      for (let i = 0; i < maxWeekCount; i++) {
         marksMap[weekIndex] = {
           className: 'empty-mark',
           label: null,
@@ -313,32 +333,30 @@ export default () => {
       year: 2025,
       month: 11,
     },
-    {
-      type: 'month-event',
-      label: 'Deneme Zamanı',
-      week: null,
-      year: 2025,
-      month: 7,
-      className: 'month-mark yellow-event',
-      badgeLabel: 'Denemeler Başlıyor!',
-    },
-    {
-      type: 'month-event',
-      label: 'Tercihler',
-      week: null,
-      year: 2025,
-      month: 10,
-      className: 'month-mark green-event',
-      badgeLabel: (
-        <Fragment>
-          <img alt="" src={ExamFlagIcon} style={{ width: 18, height: 18, marginRight:5 }} draggable={false} />
-          YKS Sınavı
-        </Fragment>
-      )
-    },
+    // {
+    //   type: 'month-event',
+    //   label: 'Deneme Zamanı',
+    //   week: null,
+    //   year: 2025,
+    //   month: 7,
+    //   className: 'month-mark yellow-event',
+    //   badgeLabel: 'Denemeler Başlıyor!',
+    // },
+    // {
+    //   type: 'month-event',
+    //   label: 'Tercihler',
+    //   week: null,
+    //   year: 2025,
+    //   month: 10,
+    //   className: 'month-mark green-event',
+    //   badgeLabel: (
+    //     <Fragment>
+    //       <img alt="" src={ExamFlagIcon} style={{ width: 18, height: 18, marginRight:5 }} draggable={false} />
+    //       YKS Sınavı
+    //     </Fragment>
+    //   )
+    // },
   ];
-
-  console.log('marksObject', marksObject?.marksMap);
 
   const weekChangeHandler = (index: number) => {
     console.log('Week Count:', marksObject?.marksMap?.[index]?.value, marksObject?.marksMap?.[index]);
